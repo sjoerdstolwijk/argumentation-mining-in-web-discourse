@@ -16,6 +16,7 @@ def process_xmi_files(data_path: str, type_system_file: str) -> pd.DataFrame:
     
     data = []
     for xmi_file_name in xmi_files:
+        file_number = int(xmi_file_name.split('.')[0])
         xmi_file_path = os.path.join(data_path, xmi_file_name)
         with open(xmi_file_path, 'rb') as f:
             cas: Cas = load_cas_from_xmi(f, type_system)
@@ -33,7 +34,7 @@ def process_xmi_files(data_path: str, type_system_file: str) -> pd.DataFrame:
         for element_type in element_types:
             for element in cas.select(element_type):
                 element_data = {
-                    'file': xmi_file_name,
+                    'file': file_number,
                     'type': element_type,
                     'text': element.get_covered_text()
                 }
